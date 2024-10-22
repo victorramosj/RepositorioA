@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-  return 'Essa é minha primeira aplicação em Flask!'
+  return render_template('index.html')
 
 @app.route('/contato')
 def contato():

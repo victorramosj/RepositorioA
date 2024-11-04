@@ -12,7 +12,15 @@ def index():
 
 @app.route('/contato')
 def contato():
-  return render_template('contato.html', tel='(87) 99898-9898')
+  return render_template('contato.html', )
+
+@app.route('/sobrenos')
+def aobrenos():
+  return render_template('sobrenos.html', )
+
+@app.route('/loja')
+def loja():
+  return render_template('loja.html', )
 
 
 if __name__ == '__main__':

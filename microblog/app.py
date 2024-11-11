@@ -1,8 +1,8 @@
-#python -m venv venv
+#ython -m venv venvp
 #.\venv\Scripts\activate
 
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -26,16 +26,31 @@ def loja():
 def usuario(nome="usuario comum"):
     return  "olá "+ nome + "!"
 
-@app.route('/operacoes')
-@app.route('/operacoes/<int:n1>/<int:n2>')
-def somar(n1 = 0, n2 = 1):
-  resultadosoma = n1 + n2
-  resultadosub = n1 - n2
-  resultadomult = n1 * n2
-  resultadodiv = n1 / n2
-  return render_template('operacoes.html', n1=n1, n2=n2, resultadosoma=resultadosoma, resultadosub=resultadosub, resultadomult=resultadomult, resultadodiv=resultadodiv)
+@app.route('/operacoes', methods=['GET', 'POST'])
+def operacoes():
+    resultado = None
 
-
+    if request.method == 'POST':
+        # Pegando os números e a operação escolhida do formulário
+        n1 = int(request.form['n1'])
+        n2 = int(request.form['n2'])
+        operacao = request.form['operacao']
+        
+        # Realizando a operação com base na escolha
+        if operacao == 'soma':
+            resultado = f'{n1} + {n2} = {n1 + n2}'
+        elif operacao == 'subtracao':
+            resultado = f'{n1} - {n2} = {n1 - n2}'
+        elif operacao == 'multiplicacao':
+            resultado = f'{n1} * {n2} = {n1 * n2}'
+        elif operacao == 'divisao':
+            # Verificando se o divisor é 0 para evitar erro de divisão por zero
+            if n2 != 0:
+                resultado = f'{n1} / {n2} = {n1 / n2}'
+            else:
+                resultado = 'Erro: Divisão por zero!'
+    
+    return render_template('operacoes.html', resultado=resultado)
 
 
 if __name__ == '__main__':
